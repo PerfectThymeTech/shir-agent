@@ -15,7 +15,7 @@ function Check-Is-Registered() {
 
 function Check-Main-Process() {
     $ProcessResult = Get-WmiObject Win32_Process -Filter "name = 'diahost.exe'"
-    
+
     if ($ProcessResult) {
         return $TRUE
     }
@@ -127,7 +127,7 @@ try {
         } else {
             $COUNT += 1
             if ($COUNT -gt 5) {
-                throw "Diahost.exe is not running"  
+                throw "Diahost.exe is not running"
             }
         }
 
