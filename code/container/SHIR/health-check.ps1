@@ -13,6 +13,6 @@ function Check-Node-Connection() {
     }
 }
 
-if (Check-Node-Connection) {   
+if (Check-Node-Connection) {
     exit 0
 }
