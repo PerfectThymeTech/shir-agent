@@ -70,6 +70,7 @@ jobs:
       - name: Install Buildx
         id: install_buildx
         uses: docker/setup-buildx-action@v3.0.0
+        if: runner.os == 'Linux'
 
       # Login Container Registry
       - name: Login Container Registry
