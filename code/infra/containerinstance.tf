@@ -10,7 +10,6 @@ resource "azurerm_container_group" "container_group" {
     ]
   }
 
-
   container { # Todo
     commands = []
     cpu      = ""
