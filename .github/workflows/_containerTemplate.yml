@@ -56,7 +56,7 @@ jobs:
       - name: Install cosign
         id: install_cosign
         uses: sigstore/cosign-installer@v3.4.0
-        if: github.event_name != 'pull_request'
+        # if: github.event_name != 'pull_request'
         with:
           cosign-release: 'v2.2.0'
 
@@ -98,8 +98,9 @@ jobs:
 
       # Build and Push Docker Image with Buildx
       - name: Build and push Docker image
-        id: build_push
+        id: build_push_linux
         uses: docker/build-push-action@v5.1.0
+        if: runner.os == 'Linux'
         with:
           context: ${{ inputs.working_directory }}
           file: ${{ inputs.working_directory }}/Dockerfile
@@ -108,6 +109,13 @@ jobs:
           labels: ${{ steps.metadata.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+      # Build and Push Docker Image with Buildx
+      - name: Build and push Docker image
+        id: build_push_windows
+        if: runner.os == 'Windows'
+        run: |
+          echo "Hello World"
 
       # Sign container image
       # This step uses the identity token to provision an ephemeral certificate against the sigstore community Fulcio instance.
@@ -118,4 +126,4 @@ jobs:
           cosign sign --yes "${TAGS}@${DIGEST}"
         env:
           TAGS: ${{ steps.metadata.outputs.tags }}
-          DIGEST: ${{ steps.build_push.outputs.digest }}
+          DIGEST: ${{ steps.build_push_linux.outputs.digest }}
