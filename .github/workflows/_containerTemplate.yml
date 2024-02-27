@@ -56,7 +56,6 @@ jobs:
       - name: Install cosign
         id: install_cosign
         uses: sigstore/cosign-installer@v3.4.0
-        # if: github.event_name != 'pull_request'
         with:
           cosign-release: 'v2.2.0'
 
@@ -113,9 +112,17 @@ jobs:
       # Build and Push Docker Image with Buildx
       - name: Build and push Docker image
         id: build_push_windows
+        working-directory: ${{ inputs.working_directory }}
         if: runner.os == 'Windows'
         run: |
           echo "Hello World"
+
+          docker build \
+            --file=Dockerfile \
+            --label ${{ steps.metadata.outputs.labels }} \
+            --tag ${{ steps.metadata.outputs.tags }} .
+          
+          docker push ${{ steps.metadata.outputs.tags }}
 
       # Sign container image
       # This step uses the identity token to provision an ephemeral certificate against the sigstore community Fulcio instance.
