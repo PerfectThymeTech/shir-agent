@@ -117,6 +117,7 @@ jobs:
         run: |
           docker build `
             --file=Dockerfile `
+            --build-arg="INSTALL_JDK=true" `
             --tag ${{ steps.metadata.outputs.tags }} .
 
           docker push ${{ steps.metadata.outputs.tags }}
