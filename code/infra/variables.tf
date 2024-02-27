@@ -87,12 +87,12 @@ variable "route_table_id" {
   }
 }
 
-variable "subnet_cidr_container_app" {
-  description = "Specifies the subnet cidr range for teh container app subnet."
+variable "subnet_cidr_container" {
+  description = "Specifies the subnet cidr range for the container subnet."
   type        = string
   sensitive   = false
   validation {
-    condition     = length(split("/", var.subnet_cidr_container_app)) == 2
+    condition     = length(split("/", var.subnet_cidr_container)) == 2
     error_message = "Please specify a valid subnet cidr range."
   }
 }
