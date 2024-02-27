@@ -115,13 +115,10 @@ jobs:
         working-directory: ${{ inputs.working_directory }}
         if: runner.os == 'Windows'
         run: |
-          echo "Hello World"
-
           docker build `
             --file=Dockerfile `
-            --label ${{ steps.metadata.outputs.labels }} `
             --tag ${{ steps.metadata.outputs.tags }} .
-          
+
           docker push ${{ steps.metadata.outputs.tags }}
 
       # Sign container image
