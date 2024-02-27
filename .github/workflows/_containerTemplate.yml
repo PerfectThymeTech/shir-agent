@@ -96,7 +96,7 @@ jobs:
             type=semver,pattern={{major}}.{{minor}}
 
       # Build and Push Docker Image with Buildx
-      - name: Build and push Docker image
+      - name: Build and push Docker image (Linux)
         id: build_push_linux
         uses: docker/build-push-action@v5.1.0
         if: runner.os == 'Linux'
@@ -110,16 +110,16 @@ jobs:
           cache-to: type=gha,mode=max
 
       # Build and Push Docker Image with Buildx
-      - name: Build and push Docker image
+      - name: Build and push Docker image (Windows)
         id: build_push_windows
         working-directory: ${{ inputs.working_directory }}
         if: runner.os == 'Windows'
         run: |
           echo "Hello World"
 
-          docker build \
-            --file=Dockerfile \
-            --label ${{ steps.metadata.outputs.labels }} \
+          docker build `
+            --file=Dockerfile `
+            --label ${{ steps.metadata.outputs.labels }} `
             --tag ${{ steps.metadata.outputs.tags }} .
           
           docker push ${{ steps.metadata.outputs.tags }}
@@ -128,7 +128,7 @@ jobs:
       # This step uses the identity token to provision an ephemeral certificate against the sigstore community Fulcio instance.
       - name: Sign container image
         id: sign
-        if: github.event_name == 'release'
+        if: github.event_name == 'release' && runner.os == 'Linux'
         run: |
           cosign sign --yes "${TAGS}@${DIGEST}"
         env:
