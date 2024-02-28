@@ -6,6 +6,8 @@ on:
     paths:
       - "code/container/**"
       - ".github/workflows/_containerTemplate.yml"
+  schedule:
+    - cron: "0 20 * * 5" # Run every Friday at 8 PM
 
   pull_request:
     branches:
