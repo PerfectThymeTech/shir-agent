@@ -120,7 +120,7 @@ jobs:
             --build-arg="INSTALL_JDK=true" `
             --tag ${{ steps.metadata.outputs.tags }} .
 
-          if ${{ github.event_name != 'pull_request' }}; then
+          if [ "${{ github.event_name != 'pull_request' }}" = true ]; then
             docker push ${{ steps.metadata.outputs.tags }}
           fi
 
