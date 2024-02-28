@@ -120,9 +120,9 @@ jobs:
             --build-arg="INSTALL_JDK=true" `
             --tag ${{ steps.metadata.outputs.tags }} .
 
-          if [ "${{ github.event_name != 'pull_request' }}" = true ]; then
+          if( ${{ github.event_name != 'pull_request' }}) {
             docker push ${{ steps.metadata.outputs.tags }}
-          fi
+          }
 
       # Sign container image
       # This step uses the identity token to provision an ephemeral certificate against the sigstore community Fulcio instance.
