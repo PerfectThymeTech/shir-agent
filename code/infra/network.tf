@@ -10,7 +10,7 @@ resource "azapi_resource" "subnet_container" {
         {
           name = "ContainerDelegation"
           properties = {
-            serviceName = "Microsoft.App/environments"
+            serviceName = "Microsoft.ContainerInstance/containerGroups"
           }
         }
       ]
