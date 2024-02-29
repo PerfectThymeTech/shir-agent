@@ -1,7 +1,7 @@
 resource "azurerm_container_group" "container_group" {
   name                = "${local.prefix}-aci001"
   location            = var.location
-  resource_group_name = azurerm_resource_group.resource_group_container_app.name
+  resource_group_name = azurerm_resource_group.resource_group.name
   tags                = var.tags
   identity {
     type = "SystemAssigned, UserAssigned"
@@ -11,37 +11,37 @@ resource "azurerm_container_group" "container_group" {
   }
 
   container { # Todo
-    commands = []
-    cpu      = ""
-    cpu_limit = ""
-    memory = ""
-    memory_limit = ""
-    image = ""
-    name = "shir"
+    commands     = []
+    cpu          = 1
+    cpu_limit    = 3
+    memory       = 2
+    memory_limit = 4
+    image        = var.container_image_reference
+    name         = "shir"
     ports {
-      port = 80
+      port     = 80
       protocol = "TCP"
     }
     environment_variables = [
-      {
-        "NODE_NAME" = ""
-      },
+      #   {
+      #     "NODE_NAME" = azurerm_data_factory_integration_runtime_self_hosted.data_factory_integration_runtime_self_hosted.name
+      #   },
       {
         "ENABLE_HA" = "false"
       },
       {
-        "HA_PORT" = ""
+        "HA_PORT" = "8060"
       },
       {
-        "ENABLE_AE" = ""
+        "ENABLE_AE" = "false"
       },
       {
-        "AE_TIME" = ""
+        "AE_TIME" = "600"
       },
     ]
     secure_environment_variables = [
       {
-        "AUTH_KEY" = ""
+        "AUTH_KEY" = azurerm_data_factory_integration_runtime_self_hosted.data_factory_integration_runtime_self_hosted.primary_authorization_key
       }
     ]
     security {
@@ -63,15 +63,15 @@ resource "azurerm_container_group" "container_group" {
     options        = []
     search_domains = []
   }
-  # dns_name_label = "${local.prefix}-pip001"
-  # dns_name_label_reuse_policy = "TenantReuse" # Todo
+  # dns_name_label = "${local.prefix}-pip001" # Not required for Private
+  # dns_name_label_reuse_policy = "TenantReuse" # Not required for Private
   exposed_port = []
-  image_registry_credential { # Todo
-    server                    = ""
-    username                  = ""
-    password                  = ""
-    user_assigned_identity_id = azurerm_user_assigned_identity.user_assigned_identity.id
-  }
+  # image_registry_credential { # Todo for private container registry
+  #   server                    = ""
+  #   username                  = ""
+  #   password                  = ""
+  #   user_assigned_identity_id = azurerm_user_assigned_identity.user_assigned_identity.id
+  # }
   ip_address_type = "Private"
   os_type         = "Windows"
   priority        = "Regular"
