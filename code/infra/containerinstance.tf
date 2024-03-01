@@ -11,42 +11,30 @@ resource "azurerm_container_group" "container_group" {
   }
 
   container { # Todo
-    commands     = []
-    cpu          = "1.0"
-    cpu_limit    = "3.0"
-    memory       = "2.0"
-    memory_limit = "4.0"
-    image        = var.container_image_reference
-    name         = "shir"
+    commands = []
+    cpu      = "1.5"
+    # cpu_limit    = "3.0"
+    memory = "2.5"
+    # memory_limit = "4.0"
+    image = var.container_image_reference
+    name  = "shir"
     ports {
       port     = 8060
       protocol = "TCP"
     }
-    environment_variables = [
-      #   { # Use default hostname value instead of manual value
-      #     "NODE_NAME" = azurerm_data_factory_integration_runtime_self_hosted.data_factory_integration_runtime_self_hosted.name
-      #   },
-      {
-        "ENABLE_HA" = "false"
-      },
-      {
-        "HA_PORT" = "8060"
-      },
-      {
-        "ENABLE_AE" = "false"
-      },
-      {
-        "AE_TIME" = "600"
-      },
-    ]
-    secure_environment_variables = [
-      {
-        "AUTH_KEY" = azurerm_data_factory_integration_runtime_self_hosted.data_factory_integration_runtime_self_hosted.primary_authorization_key
-      }
-    ]
-    security {
-      privilege_enabled = false
+    environment_variables = {
+      "NODE_NAME" = azurerm_data_factory_integration_runtime_self_hosted.data_factory_integration_runtime_self_hosted.name # Use default hostname value instead of manual value
+      "ENABLE_HA" = "false"
+      "HA_PORT"   = "8060"
+      "ENABLE_AE" = "false"
+      "AE_TIME"   = "600"
     }
+    secure_environment_variables = {
+      "AUTH_KEY" = azurerm_data_factory_integration_runtime_self_hosted.data_factory_integration_runtime_self_hosted.primary_authorization_key
+    }
+    # security { # Not supported for windows today
+    #   privilege_enabled = false
+    # }
     # volume {
     #   # Not supported for windows today
     # }
@@ -54,15 +42,15 @@ resource "azurerm_container_group" "container_group" {
   diagnostics {
     log_analytics {
       log_type      = "ContainerInsights"
-      workspace_id  = data.azurerm_log_analytics_workspace.log_shared.workspace_id
-      workspace_key = data.azurerm_log_analytics_workspace.log_shared.primary_shared_key
+      workspace_id  = data.azurerm_log_analytics_workspace.log_analytics_workspace.workspace_id
+      workspace_key = data.azurerm_log_analytics_workspace.log_analytics_workspace.primary_shared_key
     }
   }
-  dns_config { # Todo
-    nameservers = var.dns_server_ips
-    # options        = []
-    # search_domains = []
-  }
+  # dns_config { # Not supported for windows today
+  #   nameservers = var.dns_server_ips
+  #   options        = []
+  #   search_domains = []
+  # }
   # dns_name_label = "${local.prefix}-pip001"   # Not required for Private
   # dns_name_label_reuse_policy = "TenantReuse" # Not required for Private
   exposed_port = []
