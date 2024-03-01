@@ -56,7 +56,7 @@ jobs:
       - name: Login Container Registry
         id: registry_login
         uses: docker/login-action@v3.0.0
-        if: github.event_name != 'pull_request'
+        # if: github.event_name != 'pull_request'
         with:
           registry: ${{ inputs.registry_uri }}
           username: ${{ secrets.USER_NAME }}
@@ -87,6 +87,6 @@ jobs:
             --build-arg="INSTALL_JDK=true" `
             --tag ${{ steps.metadata.outputs.tags }} .
 
-          if( "${{ github.event_name != 'pull_request' }}" -eq "true" ) {
+          if( "${{ github.event_name != 'pull_request' }}" -eq "false" ) {
             docker push ${{ steps.metadata.outputs.tags }}
           }
