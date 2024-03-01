@@ -59,7 +59,7 @@ resource "azurerm_container_group" "container_group" {
     }
   }
   dns_config { # Todo
-    nameservers    = var.dns_server_ips
+    nameservers = var.dns_server_ips
     # options        = []
     # search_domains = []
   }
