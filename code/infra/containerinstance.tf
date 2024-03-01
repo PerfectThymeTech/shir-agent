@@ -12,18 +12,18 @@ resource "azurerm_container_group" "container_group" {
 
   container { # Todo
     commands     = []
-    cpu          = 1
-    cpu_limit    = 3
-    memory       = 2
-    memory_limit = 4
+    cpu          = "1.0"
+    cpu_limit    = "3.0"
+    memory       = "2.0"
+    memory_limit = "4.0"
     image        = var.container_image_reference
     name         = "shir"
     ports {
-      port     = 80
+      port     = 8060
       protocol = "TCP"
     }
     environment_variables = [
-      #   {
+      #   { # Use default hostname value instead of manual value
       #     "NODE_NAME" = azurerm_data_factory_integration_runtime_self_hosted.data_factory_integration_runtime_self_hosted.name
       #   },
       {
@@ -59,11 +59,11 @@ resource "azurerm_container_group" "container_group" {
     }
   }
   dns_config { # Todo
-    nameservers    = []
-    options        = []
-    search_domains = []
+    nameservers    = var.dns_server_ips
+    # options        = []
+    # search_domains = []
   }
-  # dns_name_label = "${local.prefix}-pip001" # Not required for Private
+  # dns_name_label = "${local.prefix}-pip001"   # Not required for Private
   # dns_name_label_reuse_policy = "TenantReuse" # Not required for Private
   exposed_port = []
   # image_registry_credential { # Todo for private container registry
@@ -75,14 +75,14 @@ resource "azurerm_container_group" "container_group" {
   ip_address_type = "Private"
   os_type         = "Windows"
   priority        = "Regular"
-  restart_policy  = "Always"
-  # sku = "" # Only required for GPU
+  restart_policy  = "OnFailure"
+  sku             = "Standard"
   subnet_ids = [
     azapi_resource.subnet_container.id
   ]
-  zones = [
-    "1",
-    "2",
-    "3"
-  ]
+  # zones = [ # Not supported for vnet injected container instances today
+  #   "1",
+  #   "2",
+  #   "3"
+  # ]
 }
