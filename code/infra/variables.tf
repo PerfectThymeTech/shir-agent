@@ -129,13 +129,24 @@ variable "private_dns_zone_id_data_factory" {
   }
 }
 
-variable "dns_server_ips" {
-  description = "Specifies the ips of the DNS servers."
-  type        = list(string)
+variable "private_dns_zone_id_sites" {
+  description = "Specifies the resource ID of the private DNS zone for Azure Websites. Not required if DNS A-records get created via Azue Policy."
+  type        = string
   sensitive   = false
-  default     = []
+  default     = ""
   validation {
-    condition     = length(var.dns_server_ips) >= 0
+    condition     = var.private_dns_zone_id_sites == "" || (length(split("/", var.private_dns_zone_id_sites)) == 9 && endswith(var.private_dns_zone_id_sites, "privatelink.azurewebsites.net"))
+    error_message = "Please specify a valid resource ID for the private DNS Zone."
+  }
+}
+
+variable "dns_server_ip" {
+  description = "Specifies the ip of the DNS server."
+  type        = string
+  sensitive   = false
+  default     = ""
+  validation {
+    condition     = length(split(".", var.dns_server_ip)) == 4
     error_message = "Please specify valid ip adresses."
   }
 }

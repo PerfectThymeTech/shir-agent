@@ -20,6 +20,5 @@ subnet_cidr_container            = "10.0.96.64/27"
 subnet_cidr_private_endpoints    = "10.0.96.96/27"
 private_dns_zone_id_key_vault    = "/subscriptions/8f171ff9-2b5b-4f0f-aed5-7fa360a1d094/resourceGroups/mycrp-prd-global-dns/providers/Microsoft.Network/privateDnsZones/privatelink.vaultcore.azure.net"
 private_dns_zone_id_data_factory = "/subscriptions/8f171ff9-2b5b-4f0f-aed5-7fa360a1d094/resourceGroups/mycrp-prd-global-dns/providers/Microsoft.Network/privateDnsZones/privatelink.datafactory.azure.net"
-dns_server_ips = [
-  "10.0.0.4"
-]
+private_dns_zone_id_sites             = "/subscriptions/8f171ff9-2b5b-4f0f-aed5-7fa360a1d094/resourceGroups/mycrp-prd-global-dns/providers/Microsoft.Network/privateDnsZones/privatelink.azurewebsites.net"
+dns_server_ip                    = "10.0.0.4"
