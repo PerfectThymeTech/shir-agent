@@ -83,6 +83,16 @@ function RegisterNewNode {
     }
 }
 
+# Set DNS configuration
+if ($Env:DNS_SERVER) {
+    $DNS_SERVER = $Env:DNS_SERVER
+    Write-Log "Configuring DNS Server to: $($DNS_SERVER)"
+    $InterfaceIndex = (Get-NetAdapter).IfIndex
+    $DnsServerList = [array]$DNS_SERVER + (Get-DnsClientServerAddress -InterfaceIndex $InterfaceIndex).ServerAddresses
+    Write-Log "New DNS Server List: $($DnsServerList)"
+    Set-DnsClientServerAddress -InterfaceIndex $InterfaceIndex -ServerAddresses $DnsServerList
+}
+
 # Register SHIR with key from Env Variable: AUTH_KEY
 if (Check-Is-Registered) {
     Write-Log "Restart the existing node"
