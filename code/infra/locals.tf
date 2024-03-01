@@ -1,6 +1,8 @@
 locals {
-  prefix        = "${lower(var.prefix)}-${var.environment}"
-  github_labels = "aca"
+  prefix = "${lower(var.prefix)}-${var.environment}"
+
+  container_registry_url   = split("/", var.container_image_reference)[0]
+  container_registry_image = trimprefix(var.container_image_reference, "${local.container_registry_url}/")
 
   virtual_network = {
     resource_group_name = split("/", var.vnet_id)[4]
