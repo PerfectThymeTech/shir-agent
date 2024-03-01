@@ -128,3 +128,14 @@ variable "private_dns_zone_id_data_factory" {
     error_message = "Please specify a valid resource ID for the private DNS Zone."
   }
 }
+
+variable "dns_server_ips" {
+  description = "Specifies the ips of the DNS servers."
+  type        = list(string)
+  sensitive   = false
+  default     = []
+  validation {
+    condition     = length(var.dns_server_ips) >= 0
+    error_message = "Please specify valid ip adresses."
+  }
+}
