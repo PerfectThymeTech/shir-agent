@@ -17,6 +17,8 @@ resource "azurerm_windows_web_app" "windows_web_app" {
     "ENABLE_AE" = "false"
     "AE_TIME"   = "600"
     "AUTH_KEY"  = azurerm_data_factory_integration_runtime_self_hosted.data_factory_integration_runtime_self_hosted.primary_authorization_key # "@Microsoft.KeyVault(SecretUri=${jsondecode(azapi_resource.key_vault_secret_shir_key.output).properties.secretUri})"
+    "WEBSITES_ENABLE_APP_SERVICE_STORAGE" = "false"
+    "WEBSITE_CONTENTOVERVNET" = "1"
   }
   client_affinity_enabled                  = false
   client_certificate_enabled               = false
