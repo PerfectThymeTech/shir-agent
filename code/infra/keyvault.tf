@@ -49,24 +49,12 @@ resource "azurerm_monitor_diagnostic_setting" "diagnostic_setting_key_vault" {
   }
 }
 
-resource "azapi_resource" "key_vault_secret_shir_key" {
-  type      = "Microsoft.KeyVault/vaults/secrets@2023-07-01"
-  parent_id = azurerm_key_vault.key_vault.id
-  name      = "datafactory-shir-auth-key"
+resource "azurerm_key_vault_secret" "key_vault_secret_shir_key" {
+  name         = "datafactory-shir-auth-key"
+  key_vault_id = azurerm_key_vault.key_vault.id
 
-  body = jsonencode({
-    properties = {
-      attributes = {
-        enabled = true
-      }
-      contentType = "text/plain"
-      value       = azurerm_data_factory_integration_runtime_self_hosted.data_factory_integration_runtime_self_hosted.primary_authorization_key
-    }
-  })
-
-  response_export_values = [
-    "properties.secretUri"
-  ]
+  content_type = "text/plain"
+  value        = azurerm_data_factory_integration_runtime_self_hosted.data_factory_integration_runtime_self_hosted.primary_authorization_key
 }
 
 resource "azurerm_private_endpoint" "key_vault_private_endpoint" {
