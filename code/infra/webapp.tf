@@ -12,13 +12,14 @@ resource "azurerm_windows_web_app" "windows_web_app" {
 
   app_settings = {
     # "NODE_NAME"  = azurerm_data_factory_integration_runtime_self_hosted.data_factory_integration_runtime_self_hosted.name # Use default hostname value instead of manual value
-    "ENABLE_HA" = "false"
-    "HA_PORT"   = "8060"
-    "ENABLE_AE" = "false"
-    "AE_TIME"   = "600"
-    "AUTH_KEY"  = azurerm_data_factory_integration_runtime_self_hosted.data_factory_integration_runtime_self_hosted.primary_authorization_key # "@Microsoft.KeyVault(SecretUri=${jsondecode(azapi_resource.key_vault_secret_shir_key.output).properties.secretUri})"
+    "ENABLE_HA"                           = "false"
+    "HA_PORT"                             = "8060"
+    "ENABLE_AE"                           = "false"
+    "AE_TIME"                             = "600"
+    "AUTH_KEY"                            = "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.key_vault_secret_shir_key.id})"
     "WEBSITES_ENABLE_APP_SERVICE_STORAGE" = "false"
-    "WEBSITE_CONTENTOVERVNET" = "1"
+    "WEBSITE_CONTENTOVERVNET"             = "1"
+    "WEBSITE_DNS_SERVER"                  = var.dns_server_ip
   }
   client_affinity_enabled                  = false
   client_certificate_enabled               = false
@@ -41,7 +42,6 @@ resource "azurerm_windows_web_app" "windows_web_app" {
       # docker_registry_username = ""
       # docker_registry_password = ""
     }
-    # auto_heal_enabled                             = false
     container_registry_managed_identity_client_id = azurerm_user_assigned_identity.user_assigned_identity.client_id
     container_registry_use_managed_identity       = true
     ftps_state                                    = "Disabled"
