@@ -16,7 +16,7 @@ resource "azurerm_windows_web_app" "windows_web_app" {
     "HA_PORT"                             = "8060"
     "ENABLE_AE"                           = "false"
     "AE_TIME"                             = "600"
-    "AUTH_KEY"                            = "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.key_vault_secret_shir_key.versionless_id})"
+    "AUTH_KEY"                            = azurerm_data_factory_integration_runtime_self_hosted.data_factory_integration_runtime_self_hosted.primary_authorization_key # "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.key_vault_secret_shir_key.versionless_id})"
     "WEBSITES_ENABLE_APP_SERVICE_STORAGE" = "false"
     "WEBSITE_CONTENTOVERVNET"             = "1"
     "WEBSITE_DNS_SERVER"                  = var.dns_server_ip
