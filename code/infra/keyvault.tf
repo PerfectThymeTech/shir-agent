@@ -55,6 +55,10 @@ resource "azurerm_key_vault_secret" "key_vault_secret_shir_key" {
 
   content_type = "text/plain"
   value        = azurerm_data_factory_integration_runtime_self_hosted.data_factory_integration_runtime_self_hosted.primary_authorization_key
+
+  depends_on = [
+    azurerm_role_assignment.current_role_assignment_key_vault_administrator
+  ]
 }
 
 resource "azurerm_private_endpoint" "key_vault_private_endpoint" {
