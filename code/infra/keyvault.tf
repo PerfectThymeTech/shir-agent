@@ -1,7 +1,7 @@
 resource "azurerm_key_vault" "key_vault" {
   name                = "${local.prefix}-kv001"
   location            = var.location
-  resource_group_name = azurerm_resource_group.resource_group_container_app.name
+  resource_group_name = azurerm_resource_group.resource_group.name
   tags                = var.tags
 
   access_policy                   = []
@@ -49,24 +49,15 @@ resource "azurerm_monitor_diagnostic_setting" "diagnostic_setting_key_vault" {
   }
 }
 
-resource "azapi_resource" "key_vault_secret_github_pat" {
-  type      = "Microsoft.KeyVault/vaults/secrets@2023-07-01"
-  parent_id = azurerm_key_vault.key_vault.id
-  name      = "github-personal-access-token"
+resource "azurerm_key_vault_secret" "key_vault_secret_shir_key" {
+  name         = "datafactory-shir-auth-key"
+  key_vault_id = azurerm_key_vault.key_vault.id
 
-  body = jsonencode({
-    properties = {
-      attributes = {
-        enabled = true
-      }
-      contentType = "text/plain"
-      value       = ""
-    }
+  content_type = "text/plain"
+  value        = azurerm_data_factory_integration_runtime_self_hosted.data_factory_integration_runtime_self_hosted.primary_authorization_key
 
-  })
-
-  response_export_values = [
-    "properties.secretUri"
+  depends_on = [
+    azurerm_role_assignment.current_role_assignment_key_vault_administrator
   ]
 }
 

@@ -87,12 +87,12 @@ variable "route_table_id" {
   }
 }
 
-variable "subnet_cidr_container_app" {
-  description = "Specifies the subnet cidr range for teh container app subnet."
+variable "subnet_cidr_container" {
+  description = "Specifies the subnet cidr range for the container subnet."
   type        = string
   sensitive   = false
   validation {
-    condition     = length(split("/", var.subnet_cidr_container_app)) == 2
+    condition     = length(split("/", var.subnet_cidr_container)) == 2
     error_message = "Please specify a valid subnet cidr range."
   }
 }
@@ -115,5 +115,38 @@ variable "private_dns_zone_id_key_vault" {
   validation {
     condition     = var.private_dns_zone_id_key_vault == "" || (length(split("/", var.private_dns_zone_id_key_vault)) == 9 && endswith(var.private_dns_zone_id_key_vault, "privatelink.vaultcore.azure.net"))
     error_message = "Please specify a valid resource ID for the private DNS Zone."
+  }
+}
+
+variable "private_dns_zone_id_data_factory" {
+  description = "Specifies the resource ID of the private DNS zone for Azure Data Factory. Not required if DNS A-records get created via Azure Policy."
+  type        = string
+  sensitive   = false
+  default     = ""
+  validation {
+    condition     = var.private_dns_zone_id_data_factory == "" || (length(split("/", var.private_dns_zone_id_data_factory)) == 9 && endswith(var.private_dns_zone_id_data_factory, "privatelink.datafactory.azure.net"))
+    error_message = "Please specify a valid resource ID for the private DNS Zone."
+  }
+}
+
+variable "private_dns_zone_id_sites" {
+  description = "Specifies the resource ID of the private DNS zone for Azure Websites. Not required if DNS A-records get created via Azue Policy."
+  type        = string
+  sensitive   = false
+  default     = ""
+  validation {
+    condition     = var.private_dns_zone_id_sites == "" || (length(split("/", var.private_dns_zone_id_sites)) == 9 && endswith(var.private_dns_zone_id_sites, "privatelink.azurewebsites.net"))
+    error_message = "Please specify a valid resource ID for the private DNS Zone."
+  }
+}
+
+variable "dns_server_ip" {
+  description = "Specifies the ip of the DNS server."
+  type        = string
+  sensitive   = false
+  default     = ""
+  validation {
+    condition     = length(split(".", var.dns_server_ip)) == 4
+    error_message = "Please specify valid ip adresses."
   }
 }
