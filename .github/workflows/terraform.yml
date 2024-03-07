@@ -35,7 +35,6 @@ jobs:
   terraform_dev_destroy:
     uses: ./.github/workflows/_terraformDestroyTemplate.yml
     name: "Dev - Destroy"
-    if: github.event_name == 'push'
     needs: [terraform_dev]
     with:
       environment: "dev"
