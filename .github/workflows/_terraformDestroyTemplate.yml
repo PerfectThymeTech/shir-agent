@@ -47,13 +47,13 @@ permissions:
 jobs:
   deployment:
     name: Terraform Destroy
-    runs-on: self-hosted
+    runs-on: [self-hosted]
     continue-on-error: false
     environment: ${{ inputs.environment }}
 
     env:
-      ARM_TENANT_ID: ${{ secrets.TENANT_ID }}
-      ARM_SUBSCRIPTION_ID: ${{ secrets.SUBSCRIPTION_ID }}
+      ARM_TENANT_ID: ${{ inputs.tenant_id }}
+      ARM_SUBSCRIPTION_ID: ${{ inputs.subscription_id }}
       ARM_CLIENT_ID: ${{ secrets.CLIENT_ID }}
       ARM_CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
       ARM_USE_OIDC: false
@@ -64,7 +64,7 @@ jobs:
         id: node_setup
         uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: ${{ inputs.node_version }}
 
       # Setup Terraform
       - name: Setup Terraform
@@ -83,7 +83,9 @@ jobs:
       - name: Terraform Init
         working-directory: ${{ inputs.working_directory }}
         run: |
-          terraform init
+          terraform init -backend-config=../../config/${CONFIG}/azurerm.tfbackend
+        env:
+          CONFIG: ${{ inputs.config }}
 
       # Terraform Destroy
       - name: Terraform Destroy
