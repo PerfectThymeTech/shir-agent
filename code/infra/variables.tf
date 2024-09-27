@@ -57,6 +57,18 @@ variable "container_image_reference" {
 }
 
 # Network variables
+variable "connectivity_delay_in_seconds" {
+  description = "Specifies the delay in seconds after the private endpoint deployment (required for the DNS automation via Policies)."
+  type        = number
+  sensitive   = false
+  nullable    = false
+  default     = 120
+  validation {
+    condition     = var.connectivity_delay_in_seconds >= 0
+    error_message = "Please specify a valid non-negative number."
+  }
+}
+
 variable "vnet_id" {
   description = "Specifies the resource ID of the Vnet used for the Azure Function."
   type        = string

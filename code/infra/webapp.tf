@@ -6,7 +6,7 @@ resource "azurerm_windows_web_app" "windows_web_app" {
   identity {
     type = "SystemAssigned, UserAssigned"
     identity_ids = [
-      azurerm_user_assigned_identity.user_assigned_identity.id
+      module.user_assigned_identity.user_assigned_identity_id
     ]
   }
 
@@ -28,7 +28,7 @@ resource "azurerm_windows_web_app" "windows_web_app" {
   enabled                                  = true
   ftp_publish_basic_authentication_enabled = false
   https_only                               = true
-  key_vault_reference_identity_id          = azurerm_user_assigned_identity.user_assigned_identity.id
+  key_vault_reference_identity_id          = module.user_assigned_identity.user_assigned_identity_id
   public_network_access_enabled            = false
   # storage_account { # TODO
   # }
@@ -42,7 +42,7 @@ resource "azurerm_windows_web_app" "windows_web_app" {
       # docker_registry_username = ""
       # docker_registry_password = ""
     }
-    container_registry_managed_identity_client_id = azurerm_user_assigned_identity.user_assigned_identity.client_id
+    container_registry_managed_identity_client_id = module.user_assigned_identity.user_assigned_identity_client_id
     container_registry_use_managed_identity       = true
     ftps_state                                    = "Disabled"
     http2_enabled                                 = true
@@ -59,7 +59,7 @@ resource "azurerm_windows_web_app" "windows_web_app" {
     websockets_enabled                            = false
     worker_count                                  = null
   }
-  service_plan_id = azurerm_service_plan.service_plan.id
+  service_plan_id = module.app_service_plan.service_plan_id
 }
 
 data "azurerm_monitor_diagnostic_categories" "diagnostic_categories_windows_web_app" {
