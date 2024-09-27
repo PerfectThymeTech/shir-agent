@@ -102,7 +102,7 @@ jobs:
       ARM_TENANT_ID: ${{ inputs.tenant_id }}
       ARM_SUBSCRIPTION_ID: ${{ inputs.subscription_id }}
       ARM_CLIENT_ID: ${{ secrets.CLIENT_ID }}
-      ARM_USE_OIDC: false
+      ARM_USE_OIDC: true
 
     steps:
       # Setup Node
@@ -198,7 +198,7 @@ jobs:
       ARM_TENANT_ID: ${{ inputs.tenant_id }}
       ARM_SUBSCRIPTION_ID: ${{ inputs.subscription_id }}
       ARM_CLIENT_ID: ${{ secrets.CLIENT_ID }}
-      ARM_USE_OIDC: false
+      ARM_USE_OIDC: true
 
     steps:
       # Setup Node
