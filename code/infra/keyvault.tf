@@ -26,6 +26,5 @@ resource "azurerm_key_vault_secret" "key_vault_secret_shir_key" {
 
   depends_on = [
     module.key_vault.key_vault_setup_completed,
-    azurerm_role_assignment.current_role_assignment_key_vault_administrator,
   ]
 }
