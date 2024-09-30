@@ -1,7 +1,7 @@
 # General variables
 location    = "northeurope"
 environment = "dev"
-prefix      = "shir"
+prefix      = "myshir"
 tags = {
   workload = "shir-runners"
 }
