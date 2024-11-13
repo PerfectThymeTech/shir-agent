@@ -86,8 +86,8 @@ function RegisterNewNode {
 
 # Set timezone if set from input
 If (Test-Path Env.TZ) {
-    try { 
-        Set-TimeZone -Id $Env:TZ 
+    try {
+        Set-TimeZone -Id $Env:TZ
     } catch {
         Write-Log "Unable to set the $Env:TZ timezone"
     }

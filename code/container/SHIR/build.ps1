@@ -76,7 +76,7 @@ function Add-Monitor-User($theUser) {
         Write-Log "The user $theUser was already in the Performance Log Users group"
     }
     Write-Log "The user $theUser is now in groups Performance Monitor Users and Performance Log Users"
-  }  
+  }
 
 Install-SHIR
 
