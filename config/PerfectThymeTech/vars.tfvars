@@ -10,7 +10,7 @@ log_analytics_workspace_id = "/subscriptions/e82c5267-9dc4-4f45-ac13-abdd5e130d2
 # SHIR variables
 
 # Container variables
-container_image_reference = "ghcr.io/perfectthymetech/shiragentazure:main"
+container_image_reference = "ghcr.io/perfectthymetech/shiragentazure:pr-6"
 
 # Network variables
 vnet_id                          = "/subscriptions/1fdab118-1638-419a-8b12-06c9543714a0/resourceGroups/ptt-dev-networking-rg/providers/Microsoft.Network/virtualNetworks/spoke-ptt-dev-vnet001"
