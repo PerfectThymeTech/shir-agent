@@ -19,7 +19,7 @@ function Install-SHIR() {
 
         # Temporarily disable progress updates to speed up the download process. (See https://stackoverflow.com/questions/69942663/invoke-webrequest-progress-becomes-irresponsive-paused-while-downloading-the-fil)
         $ProgressPreference = 'SilentlyContinue'
-        Invoke-WebRequest -Uri 'https://go.microsoft.com/fwlink/?linkid=839822&clcid=0x409' -OutFile "C:\SHIR\$MsiFileName"
+        Invoke-WebRequest -Uri 'https://download.microsoft.com/download/e/4/7/e4771905-1079-445b-8bf9-8a1a075d8a10/IntegrationRuntime_5.50.9162.1.msi' -OutFile "C:\SHIR\$MsiFileName"
         $ProgressPreference = 'Continue'
     }
 
