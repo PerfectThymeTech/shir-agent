@@ -55,7 +55,7 @@ jobs:
       # Login Container Registry
       - name: Login Container Registry
         id: registry_login
-        uses: docker/login-action@v3.0.0
+        uses: docker/login-action@v3.3.0
         if: github.event_name != 'pull_request'
         with:
           registry: ${{ inputs.registry_uri }}
@@ -65,7 +65,7 @@ jobs:
       # Extract Metadata (tags, labels)
       - name: Extract Metadata
         id: metadata
-        uses: docker/metadata-action@v5.5.1
+        uses: docker/metadata-action@v5.7.0
         with:
           context: workflow
           images: |

@@ -35,12 +35,6 @@ on:
       CLIENT_ID:
         required: true
         description: "Specifies the client id."
-      CLIENT_SECRET:
-        required: true
-        description: "Specifies the client secret."
-      PERSONAL_ACCESS_TOKEN:
-        required: true
-        description: "Specifies a GitHub PAT."
 
 permissions:
   id-token: write
@@ -100,13 +94,15 @@ jobs:
     continue-on-error: false
     environment: ${{ inputs.environment }}
     needs: [lint]
+    concurrency:
+      group: terraform-${{ inputs.config }}-${{ inputs.environment }}
+      cancel-in-progress: false
 
     env:
       ARM_TENANT_ID: ${{ inputs.tenant_id }}
       ARM_SUBSCRIPTION_ID: ${{ inputs.subscription_id }}
       ARM_CLIENT_ID: ${{ secrets.CLIENT_ID }}
-      ARM_CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
-      ARM_USE_OIDC: false
+      ARM_USE_OIDC: true
 
     steps:
       # Setup Node
@@ -153,7 +149,6 @@ jobs:
           terraform plan -var-file="../../config/${CONFIG}/vars.tfvars" -input=false
         env:
           CONFIG: ${{ inputs.config }}
-          TF_VAR_github_personal_access_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
 
       # Add Pull Request Comment
       - name: Add Pull Request Comment
@@ -193,15 +188,17 @@ jobs:
     runs-on: [self-hosted]
     continue-on-error: false
     environment: ${{ inputs.environment }}
-    if: github.event_name == 'push' || github.event_name == 'release'
+    # if: github.event_name == 'push' || github.event_name == 'release'
     needs: [plan]
+    concurrency:
+      group: terraform-${{ inputs.config }}-${{ inputs.environment }}
+      cancel-in-progress: false
 
     env:
       ARM_TENANT_ID: ${{ inputs.tenant_id }}
       ARM_SUBSCRIPTION_ID: ${{ inputs.subscription_id }}
       ARM_CLIENT_ID: ${{ secrets.CLIENT_ID }}
-      ARM_CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
-      ARM_USE_OIDC: false
+      ARM_USE_OIDC: true
 
     steps:
       # Setup Node
@@ -239,4 +236,3 @@ jobs:
           terraform apply -var-file="../../config/${CONFIG}/vars.tfvars" -auto-approve -input=false
         env:
           CONFIG: ${{ inputs.config }}
-          TF_VAR_github_personal_access_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}

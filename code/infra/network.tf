@@ -1,16 +1,16 @@
-resource "azapi_resource" "subnet_container_app" {
+resource "azapi_resource" "subnet_container" {
   type      = "Microsoft.Network/virtualNetworks/subnets@2022-07-01"
-  name      = "ContainerAppSubnet"
+  name      = "ContainerSubnetShir"
   parent_id = data.azurerm_virtual_network.virtual_network.id
 
-  body = jsonencode({
+  body = {
     properties = {
-      addressPrefix = var.subnet_cidr_container_app
+      addressPrefix = var.subnet_cidr_container
       delegations = [
         {
-          name = "ContainerAppDelegation"
+          name = "ContainerDelegation"
           properties = {
-            serviceName = "Microsoft.App/environments"
+            serviceName = "Microsoft.Web/serverfarms"
           }
         }
       ]
@@ -26,15 +26,15 @@ resource "azapi_resource" "subnet_container_app" {
       serviceEndpointPolicies = []
       serviceEndpoints        = []
     }
-  })
+  }
 }
 
 resource "azapi_resource" "subnet_private_endpoints" {
   type      = "Microsoft.Network/virtualNetworks/subnets@2022-07-01"
-  name      = "CAPrivateEndpointSubnet"
+  name      = "PrivateEndpointSubnetShir"
   parent_id = data.azurerm_virtual_network.virtual_network.id
 
-  body = jsonencode({
+  body = {
     properties = {
       addressPrefix = var.subnet_cidr_private_endpoints
       delegations   = []
@@ -50,5 +50,9 @@ resource "azapi_resource" "subnet_private_endpoints" {
       serviceEndpointPolicies = []
       serviceEndpoints        = []
     }
-  })
+  }
+
+  depends_on = [
+    azapi_resource.subnet_container
+  ]
 }
